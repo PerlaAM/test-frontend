@@ -1,0 +1,14 @@
+.container-item-list {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  .box {
+    width: 1200px;
+    margin: 0 auto;
+  }
+}
