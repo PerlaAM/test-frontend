@@ -1,8 +1,15 @@
 @import '_colors';
+@import './components/search-box.scss';
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   background-color: $light-gray;
+  height: 100vh;
+}
+
+.col-10 {
+  flex: 0 0 auto;
+  width: 83.33333333%;
 }
