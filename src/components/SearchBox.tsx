@@ -3,8 +3,10 @@ import logo from '../assets/Logo_ML.png';
 import logo2x from '../assets/Logo_ML@2x.png.png';
 import searchIcon from '../assets/ic_Search.png';
 import searchIcon2x from '../assets/ic_Search@2x.png.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchBox(props: any) {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,6 +15,8 @@ export default function SearchBox(props: any) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    navigate(`/items?search=${searchValue}`);
   };
 
   return (
