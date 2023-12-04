@@ -4,6 +4,7 @@ import logo2x from '../assets/Logo_ML@2x.png.png';
 import searchIcon from '../assets/ic_Search.png';
 import searchIcon2x from '../assets/ic_Search@2x.png.png';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function SearchBox(props: any) {
   const navigate = useNavigate();
@@ -22,7 +23,10 @@ export default function SearchBox(props: any) {
   return (
     <header className='container-search-box'>
       <div className='box'>
-        <img src={logo} srcSet={`${logo2x} 2x`} alt='Logo Mercado Libre' />
+        <Link to={'/'}>
+          <img src={logo} srcSet={`${logo2x} 2x`} alt='Logo Mercado Libre' />
+        </Link>
+
         <form onSubmit={handleSubmit}>
           <input
             type='text'

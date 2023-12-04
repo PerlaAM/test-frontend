@@ -13,3 +13,9 @@ body {
   height: 100vh;
   color: $black;
 }
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: $black;
+}

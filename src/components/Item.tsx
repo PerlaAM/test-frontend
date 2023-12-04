@@ -31,7 +31,7 @@ export default function ItemList(props: any) {
           </p>
           <h1 className='title'>{itemData.title}</h1>
         </div>
-        {/* <p className='city'>{itemData.address.city_name}</p> */}
+        <p className='city'>{itemData.city}</p>
       </div>
     </div>
   );
