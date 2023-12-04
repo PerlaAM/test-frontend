@@ -1,6 +1,7 @@
 export interface ISearch {
   author: IAuthor;
   items: IItems[];
+  categories: ICategories[];
 }
 
 export interface IAuthor {
@@ -22,4 +23,8 @@ export interface IPrice {
   currency: string;
   amount: number;
   decimals: number;
+}
+
+export interface ICategories {
+  path: string;
 }

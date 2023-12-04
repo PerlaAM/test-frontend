@@ -2,12 +2,18 @@ import GeneralButton from './GeneralButton';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IDetail, IPrice } from '../interfaces/detailInterface';
+import Breadcrumb from '../components/Breadcrumb';
 
 export default function ItemDetail(props: any) {
   const { id } = useParams();
   const [itemData, setItemData] = useState<IDetail>();
+  const [productPath, setProductPath] = useState([]);
 
   useEffect(() => {
+    const getProductPath = localStorage.getItem('productPath');
+    const productPath = getProductPath ? JSON.parse(getProductPath) : null;
+
+    setProductPath(productPath);
     getDetails(id);
   }, []);
 
@@ -36,7 +42,7 @@ export default function ItemDetail(props: any) {
     const formattedDecimals = decimals.toString().replace('.', '');
     const formattedPrice = (
       <>
-        <span>{currency}</span>
+        <span> {currency} </span>
         {formattedAmount}
         <span className='decimal'>{formattedDecimals}</span>
       </>
@@ -46,34 +52,40 @@ export default function ItemDetail(props: any) {
   }
 
   return (
-    <div className='container-details'>
-      <div className='box'>
-        <div className='padding-2'>
-          <div className='flex'>
-            <div className='min-width'>
-              <img src={itemData?.item.picture} alt='' />
-            </div>
-            <div className='box-details'>
-              <p className='status'>
-                {itemData?.item.condition}{' '}
-                {itemData?.item.sold_quantity
-                  ? ' - ' + itemData?.item.sold_quantity + ' vendidos'
-                  : ''}
-              </p>
-              <h1 className='title'>{itemData?.item.title}</h1>
-              <h2 className='price'>
-                {itemData?.item.price ? formatPrice(itemData.item.price) : ''}
-              </h2>
+    <>
+      {productPath && productPath.length > 0 && (
+        <Breadcrumb categories={productPath} />
+      )}
 
-              <GeneralButton title={'Comprar'} />
+      <div className='container-details'>
+        <div className='box'>
+          <div className='padding-2'>
+            <div className='flex'>
+              <div className='min-width'>
+                <img src={itemData?.item.picture} alt='' />
+              </div>
+              <div className='box-details'>
+                <p className='status'>
+                  {itemData?.item.condition}{' '}
+                  {itemData?.item.sold_quantity
+                    ? ' - ' + itemData?.item.sold_quantity + ' vendidos'
+                    : ''}
+                </p>
+                <h1 className='title'>{itemData?.item.title}</h1>
+                <h2 className='price'>
+                  {itemData?.item.price ? formatPrice(itemData.item.price) : ''}
+                </h2>
+
+                <GeneralButton title={'Comprar'} />
+              </div>
             </div>
-          </div>
-          <div className='box-description'>
-            <h2 className='title-description'>Descripción del producto</h2>
-            <p className='description'>{itemData?.item.description}</p>
+            <div className='box-description'>
+              <h2 className='title-description'>Descripción del producto</h2>
+              <p className='description'>{itemData?.item.description}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
