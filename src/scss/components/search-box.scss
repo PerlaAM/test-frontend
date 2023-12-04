@@ -49,6 +49,10 @@
       }
     }
 
+    button:hover {
+      background-color: $medium-gray;
+    }
+
     input:focus {
       outline: none;
     }
