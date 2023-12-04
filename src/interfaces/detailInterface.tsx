@@ -1,6 +1,6 @@
-export interface ISearch {
+export interface IDetail {
   author: IAuthor;
-  items: IItems[];
+  item: IItem;
 }
 
 export interface IAuthor {
@@ -8,14 +8,15 @@ export interface IAuthor {
   lastname: string;
 }
 
-export interface IItems {
+export interface IItem {
   id: string;
   title: string;
   price: IPrice;
   picture: string;
   condition: string;
   free_shipping: boolean;
-  city: string;
+  sold_quantity: number;
+  description: string;
 }
 
 export interface IPrice {

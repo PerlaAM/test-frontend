@@ -33,14 +33,14 @@ export default function ProductList(props: any) {
   };
 
   return (
-    <Link to='/items:id'>
-      <div className='container-item-list'>
-        <div className='box'>
-          {itemData?.items.map((item) => (
-            <Item key={item.id} item={item} />
-          ))}
-        </div>
+    <div className='container-item-list'>
+      <div className='box'>
+        {itemData?.items.map((item) => (
+          <Link key={item.id} to={`/items/${item.id}`}>
+            <Item item={item} />
+          </Link>
+        ))}
       </div>
-    </Link>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 8081;
 const cors = require('cors');
 const urlBase = 'https://api.mercadolibre.com';
+const author = { name: 'Perla', lastname: 'Aguilar' };
 
 app.use(
   cors({
@@ -29,9 +30,6 @@ app.get('/api/items', async (req, res) => {
     const apiUrl = `${urlBase}/sites/MLA/search?q=${query}&limit=4`;
     const response = await axios.get(apiUrl);
     const { results: data, filters: categories } = response.data;
-
-    const author = { name: '', lastname: '' };
-
     const items = data.map((item) => ({
       id: item.id,
       title: item.title,
@@ -43,6 +41,7 @@ app.get('/api/items', async (req, res) => {
       picture: item.thumbnail,
       condition: item.condition === 'new' ? 'Nuevo' : 'Usado',
       free_shipping: item.shipping.free_shipping,
+      city: item.seller_address.city.name,
     }));
 
     const categoriesArray =
@@ -63,9 +62,10 @@ app.get('/api/items', async (req, res) => {
   }
 });
 
-app.get('/api/items', async (req, res) => {
+app.get('/api/items/:id', async (req, res) => {
   try {
-    const id = req.query.id;
+    const id = req.params.id;
+    console.log(req);
 
     if (!id) {
       return res
@@ -73,14 +73,31 @@ app.get('/api/items', async (req, res) => {
         .json({ error: 'El parámetro "id" es obligatorio' });
     }
 
-    const [itemsResponse, categoriesResponse] = await Promise.all([
-      axios.get(`https://api.mercadolibre.com/items/${id}`),
-      axios.get(`${urlBase}/items/${id}​/description`),
+    const [itemsResponse, descriptionResponse] = await Promise.all([
+      axios.get(`${urlBase}/items/${id}`),
+      axios.get(`${urlBase}/items/${id}/description`),
     ]);
 
-    const author = { name: '', lastname: '' };
+    const itemsData = itemsResponse.data;
+    const descriptionData = descriptionResponse.data;
+    const item = {
+      id: itemsData.id,
+      title: itemsData.title,
+      price: {
+        currency: itemsData.currency_id === 'ARS' ? '$' : itemsData.currency_id,
+        amount: itemsData.price,
+        decimals: (itemsData.price % 1).toFixed(2).slice(1),
+      },
+      picture: itemsData.thumbnail,
+      condition: itemsData.condition === 'new' ? 'Nuevo' : 'Usado',
+      free_shipping: itemsData.shipping.free_shipping,
+      sold_quantity: itemsData.sold_quantity,
+      description: descriptionData.plain_text,
+    };
 
-    res.json(itemsResponse);
+    const results = { author, item };
+
+    res.json(results);
   } catch (error) {
     console.error(error);
     res

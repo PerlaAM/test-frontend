@@ -54,6 +54,13 @@ $grid-breakpoints: (
         font-size: 2.875rem;
         font-weight: 400;
         margin-bottom: 2rem;
+        display: flex;
+        align-items: flex-start;
+        line-height: 1;
+
+        .decimal {
+          font-size: 1.3rem;
+        }
       }
     }
 
@@ -97,6 +104,10 @@ $grid-breakpoints: (
 
     .box .box-details .price {
       font-size: 2rem;
+    }
+
+    .box .box-description {
+      width: 100%;
     }
 
     .box img {

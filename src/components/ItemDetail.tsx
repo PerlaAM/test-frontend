@@ -1,29 +1,76 @@
 import GeneralButton from './GeneralButton';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { IDetail, IPrice } from '../interfaces/detailInterface';
 
 export default function ItemDetail(props: any) {
+  const { id } = useParams();
+  const [itemData, setItemData] = useState<IDetail>();
+
+  useEffect(() => {
+    getDetails(id);
+  }, []);
+
+  const getDetails = (id: any) => {
+    const apiUrl = `http://localhost:8081/api/items/${id}`;
+
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setItemData(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  function formatPrice(price: IPrice) {
+    const { currency, amount, decimals } = price;
+    const formattedAmount = amount.toLocaleString();
+    const formattedDecimals = decimals.toString().replace('.', '');
+    const formattedPrice = (
+      <>
+        <span>{currency}</span>
+        {formattedAmount}
+        <span className='decimal'>{formattedDecimals}</span>
+      </>
+    );
+
+    return formattedPrice;
+  }
+
   return (
     <div className='container-details'>
       <div className='box'>
         <div className='padding-2'>
           <div className='flex'>
             <div className='min-width'>
-              <img src='' alt='' />
+              <img src={itemData?.item.picture} alt='' />
             </div>
             <div className='box-details'>
-              <p className='status'>Nuevo - 234 vendidos</p>
-              <h1 className='title'>Deco reverse sombrero oxford</h1>
-              <h2 className='price'>$7,2464</h2>
+              <p className='status'>
+                {itemData?.item.condition}{' '}
+                {itemData?.item.sold_quantity
+                  ? ' - ' + itemData?.item.sold_quantity + ' vendidos'
+                  : ''}
+              </p>
+              <h1 className='title'>{itemData?.item.title}</h1>
+              <h2 className='price'>
+                {itemData?.item.price ? formatPrice(itemData.item.price) : ''}
+              </h2>
+
               <GeneralButton title={'Comprar'} />
             </div>
           </div>
           <div className='box-description'>
             <h2 className='title-description'>Descripción del producto</h2>
-            <p className='description'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-              adipisci quaerat tempora ducimus, magnam exercitationem. Sint non
-              ipsa, sunt quibusdam provident perspiciatis delectus quo corporis
-              quos tempora reprehenderit harum at?
-            </p>
+            <p className='description'>{itemData?.item.description}</p>
           </div>
         </div>
       </div>
