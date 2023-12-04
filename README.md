@@ -23,3 +23,10 @@ $ cd test-frontend
 $ npm install
 $ npm start
 ```
+
+To Visit App:
+
+`localhost:3000/`
+
+Server running in:
+`localhost:8081/`
