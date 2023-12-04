@@ -2,6 +2,8 @@
 @import './components/search-box.scss';
 @import './components/item-list.scss';
 @import './components/item.scss';
+@import './components/item-details.scss';
+@import './components/general-button.scss';
 
 body {
   margin: 0;
@@ -9,4 +11,5 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: $light-gray;
   height: 100vh;
+  color: $black;
 }
